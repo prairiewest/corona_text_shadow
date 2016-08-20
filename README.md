@@ -1,6 +1,61 @@
 # Corona Text Shadow and Glow
 This is the source code for the tutorial at http://prairiewest.net/blog/2013/12/text-shadow-glow-corona-sdk/
 
+
+Sample usage:
+```
+  local styledText = require("styledText")
+	local myText = styledText.newText({
+		text = "Hello World", 
+		textColor = {255,255,255,255},
+		x = 160,
+		y = 200, 
+		font = "Arial", 
+		size = 24,
+		shadowOffset = 2,
+		shadowColor = {0,0,0,80},
+		glowOffset = 1,
+		glowColor = {120,0,0,180}
+	})
+```
+
+Colors can be specified using the new scale (0.0-1.0) or the old scale (0-255)
+
+List of all parameters that can be passed in:
+```
+   text:      the string to be displayed [default: " "]
+   textColor: the color of the text [default: white]
+   size:      the text size [default: 24 points]
+   font:      the name of the font face to use [default: native.systemFontBold]
+
+   width:     the max width (in pixels); this is needed if you want multi-line text [default: nil]
+   align:     a string describing text alignment when width is supplied [default: "left"]
+
+   x:       the x coordinate [default: 160]
+   y:       the y coordinate [default: 240]
+   anchorX: the X anchor (0.0 - 1.0) [default: 0.5]
+   anchorY: the Y anchor (0.0 - 1.0) [default: 0.5]
+
+   shadowColor:  the color of the shadow effect [default: black (0,0,0,0.5)]
+   shadowOffset: the distance that the shadow is offset from the text [default: 0]
+   blurShadow:   0=do not blur the shadow; 1=blur the shadow [default=1]
+
+   glowColor:  the color of the glow around the text [default: grey (0.5,0.5,0.5,1.0)]
+   glowOffset: the width of the glow around the text, in pixels [default: 0]
+   blurGlow    0=do not blur the glow; 1=blur the glow [default=1]
+
+   embossDepth: integer, the number of pixels to raise or lower the emboss effect. Negative means raised instead. [default: 0]
+```
+
+Note that to remove the text you must call its clear() function first:
+```
+   myText:clear()
+   display:remove(myText)
+```
+
+Copyright 2013 Todd Trann
+
+
 LICENSE
 
 The MIT License (MIT)
