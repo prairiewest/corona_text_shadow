@@ -260,10 +260,9 @@ local function newText(options)
 	layerOutput.x=x; layerOutput.y=y
 
 	function layerOutput:clear()
-		for i=1,layerOutput.numChildren do
-			if (layerOutput[i] ~= nil) then
-			    layerOutput[i]:removeSelf()
-			end
+		while layerOutput.numChildren > 0 do
+			local child = layerOutput[1]
+			if child then child:removeSelf() end
 		end
 	end
 		
