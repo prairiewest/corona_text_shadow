@@ -2,7 +2,8 @@
 This is the source code for the tutorial at http://prairiewest.net/blog/2013/12/text-shadow-glow-corona-sdk/
 
 
-##Sample usage:
+##Sample usage
+
 ```
   local styledText = require("styledText")
   local myText
