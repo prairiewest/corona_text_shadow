@@ -13,18 +13,18 @@ This is the source code for the tutorial at http://prairiewest.net/blog/2013/12/
   end
 
   styledText.newText({
-		text = "Hello World", 
-		textColor = {255,255,255,255},
-		x = 160,
-		y = 200, 
-		font = "Arial", 
-		size = 24,
-		shadowOffset = 2,
-		shadowColor = {0,0,0,80},
-		glowOffset = 1,
-		glowColor = {120,0,0,180},
-		callback = registerObject
-	})
+	text = "Hello World", 
+	textColor = {255,255,255,255},
+	x = 160,
+	y = 200, 
+	font = "Arial", 
+	size = 24,
+	shadowOffset = 2,
+	shadowColor = {0,0,0,80},
+	glowOffset = 1,
+	glowColor = {120,0,0,180},
+	callback = registerObject
+  })
 ```
 
 ## Parameters

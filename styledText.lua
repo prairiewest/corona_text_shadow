@@ -255,7 +255,7 @@ local function newText(options)
 	end
 
   	timer.performWithDelay( 100, function()
-  		return startCapture(args, layer1, layer2, labelText)
+  		startCapture(args, layer1, layer2, labelText)
   	end)
 
 end
