@@ -5,7 +5,13 @@ This is the source code for the tutorial at http://prairiewest.net/blog/2013/12/
 Sample usage:
 ```
   local styledText = require("styledText")
-	local myText = styledText.newText({
+  local myText
+
+  local registerObject = function(o)
+      myText = o
+  end
+
+  styledText.newText({
 		text = "Hello World", 
 		textColor = {255,255,255,255},
 		x = 160,
@@ -15,11 +21,12 @@ Sample usage:
 		shadowOffset = 2,
 		shadowColor = {0,0,0,80},
 		glowOffset = 1,
-		glowColor = {120,0,0,180}
+		glowColor = {120,0,0,180},
+      callback = registerObject
 	})
 ```
 
-Colors can be specified using the new scale (0.0-1.0) or the old scale (0-255)
+Colors can be specified using floating point (0.0-1.0) or old style integer (0-255)
 
 List of all parameters that can be passed in:
 ```
@@ -44,14 +51,15 @@ List of all parameters that can be passed in:
    glowOffset: the width of the glow around the text, in pixels [default: 0]
    blurGlow    0=do not blur the glow; 1=blur the glow [default=1]
 
-   embossDepth: integer, the number of pixels to raise or lower the emboss effect. Negative means raised instead. [default: 0]
+   embossDepth: integer, the number of pixels to raise or lower the emboss effect. Negative means raised. [default: 0]
+
+   id: if supplied, the final object will be assigned this id
+   callback: if supplied, this function will be called after the text is rendered, with the final output as the argument
 ```
 
-Note that to remove the text you must call its clear() function first:
-```
-   myText:clear()
-   display:remove(myText)
-```
+To remove the text once created, you must have kept a reference to it with the callback function:
+   textObjectReference:removeSelf()
+
 
 Copyright 2013 Todd Trann
 

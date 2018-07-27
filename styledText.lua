@@ -43,10 +43,10 @@
 --   glowOffset: the width of the glow around the text, in pixels [default: 0]
 --   blurGlow    0=do not blur the glow; 1=blur the glow [default=1]
 --
---   embossDepth: integer, the number of pixels to raise or lower the emboss effect. Negative means raised instead. [default: 0]
+--   embossDepth: integer, the number of pixels to raise or lower the emboss effect. Negative means raised. [default: 0]
 --
 --   id: if supplied, the final object will be assigned this id
---   callback: if supplied, this function will be called after the text is rendered, with the final output as the only argument
+--   callback: if supplied, this function will be called after the text is rendered, with the final output as the argument
 --
 -- To remove the text once created, you must have kept a reference to it with the callback function:
 --   textObjectReference:removeSelf()
@@ -192,6 +192,7 @@ local function newText(options)
 	local startCapture = function(args, layer1, layer2, labelText)
 		local layerOutput = display.newGroup()
 		local output1, output2
+		local nextIndex = #labelText + 1
 
 		if (args.shadowOffset > 1 or args.embossDepth ~= 0) then
 			output1 = display.capture(layer1)
@@ -226,10 +227,10 @@ local function newText(options)
 		layer2:removeSelf(); layer2 = nil
 		
 		local styleO = {
-			parent=layerOutput,
-			text=args.text, 
-			font=args.font, 
-			fontSize=args.size
+			parent   = layerOutput,
+			text     = args.text, 
+			font     = args.font, 
+			fontSize = args.size
 		}
 		if (type(args.width) == "number") then
 			styleO.width = args.width; styleO.align = args.align
