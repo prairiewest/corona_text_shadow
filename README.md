@@ -2,7 +2,7 @@
 This is the source code for the tutorial at http://prairiewest.net/blog/2013/12/text-shadow-glow-corona-sdk/
 
 
-Sample usage:
+##Sample usage:
 ```
   local styledText = require("styledText")
   local myText
@@ -26,7 +26,7 @@ Sample usage:
 	})
 ```
 
-Colors can be specified using floating point (0.0-1.0) or old style integer (0-255)
+## Parameters
 
 List of all parameters that can be passed in:
 ```
@@ -57,8 +57,14 @@ List of all parameters that can be passed in:
    callback: if supplied, this function will be called after the text is rendered, with the final output as the argument
 ```
 
+All colors can be specified using floating point (0.0-1.0) or old style integer (0-255)
+
+## Removal
+
 To remove the text once created, you must have kept a reference to it with the callback function:
+```
 	myText:removeSelf()
+```
 
 
 Copyright 2013 Todd Trann
