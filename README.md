@@ -22,7 +22,7 @@ Sample usage:
 		shadowColor = {0,0,0,80},
 		glowOffset = 1,
 		glowColor = {120,0,0,180},
-      callback = registerObject
+		callback = registerObject
 	})
 ```
 
@@ -58,7 +58,7 @@ List of all parameters that can be passed in:
 ```
 
 To remove the text once created, you must have kept a reference to it with the callback function:
-   textObjectReference:removeSelf()
+	myText:removeSelf()
 
 
 Copyright 2013 Todd Trann
