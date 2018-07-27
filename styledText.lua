@@ -254,7 +254,7 @@ local function newText(options)
 		if args.callback then args.callback(layerOutput) end
 	end
 
-  	timer.performWithDelay( 100, function()
+  	timer.performWithDelay( 200, function()
   		startCapture(args, layer1, layer2, labelText)
   	end)
 

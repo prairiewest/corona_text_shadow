@@ -86,7 +86,7 @@ local function main()
 		callback = registerObject
 	})
 
-	local myText5 = styledText.newText({
+	styledText.newText({
 		text = "White On Blue",
 		id = "text5",
 		textColor = {1.0, 1.0, 1.0, 1.0},
