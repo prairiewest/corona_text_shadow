@@ -40,48 +40,47 @@ local function main()
 	styledText.newText({
 		text = "Unstyled",
 		id = "text1",
-		textColor = {40,180,120,255},
+		textColor = {0.15, 0.70, 0.5, 1.0},
 		x = display.contentWidth / 2,
 		y = spacing, 
 		font = "Arial", 
-		size = 40,
+		size = 32,
 		callback = registerObject
 	})
 
 	styledText.newText({
 		text = "Glow Black",
 		id = "text2",
-		textColor = {40,180,120,255},
+		textColor = {0.15, 0.70, 0.5, 1.0},
 		x = display.contentWidth / 2,
 		y = spacing*2, 
 		font = "Arial", 
-		size = 40,
+		size = 34,
 		glowOffset = 1,
-		glowColor = {0,0,0,120},
+		glowColor = {0, 0, 0, 0.5},
 		callback = registerObject
 	})
 
 	styledText.newText({
 		text = "Glow White",
 		id = "text3", 
-		textColor = {40,180,120,255},
+		textColor = {0.15, 0.70, 0.5, 1.0},
 		x = display.contentWidth / 2,
 		y = spacing*3, 
-		font = "Arial", 
-		size = 40,
+		font = native.systemFontBold, 
+		size = 36,
 		glowOffset = 1,
-		glowColor = {255,255,255,120},
+		glowColor = {1, 1, 1, 0.5},
 		callback = registerObject
 	})
 
 	styledText.newText({
 		text = "Shadow Black",
 		id = "text4",
-		textColor = {40,180,120,255},
+		textColor = {0.15, 0.70, 0.5, 1.0},
 		x = display.contentWidth / 2,
 		y = spacing*4, 
-		font = "Arial", 
-		size = 40,
+		size = 38,
 		shadowOffset = 3,
 		shadowColor = {0,0,0,180},
 		callback = registerObject
@@ -90,7 +89,7 @@ local function main()
 	local myText5 = styledText.newText({
 		text = "White On Blue",
 		id = "text5",
-		textColor = {1,1,1,1.0},
+		textColor = {1.0, 1.0, 1.0, 1.0},
 		x = display.contentWidth / 2,
 		y = spacing*5, 
 		font = "Arial", 
@@ -100,6 +99,19 @@ local function main()
 		callback = registerObject
 	})
 
+	styledText.newText({
+		text = "Shadow and Red Glow", 
+		textColor = {1.0, 1.0, 1.0, 1.0},
+		x = 160,
+		y = display.contentHeight - 14, 
+		font = "Arial", 
+		size = 24,
+		shadowOffset = 2,
+		shadowColor = {0, 0, 0, 0.40},
+		glowOffset = 1,
+		glowColor = {0.5, 0, 0, 0.75},
+		callback = registerObject
+	})
 
 end
 

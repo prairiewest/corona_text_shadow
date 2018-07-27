@@ -5,17 +5,19 @@
 -- Sample usage:
 --
 --  local styledText = require("styledText")
---	local myText = styledText.newText({
+--
+--	styledText.newText({
 --		text = "Hello World", 
---		textColor = {255,255,255,255},
+--		textColor = {1.0, 1.0, 1.0, 1.0},
 --		x = 160,
 --		y = 200, 
 --		font = "Arial", 
 --		size = 24,
 --		shadowOffset = 2,
---		shadowColor = {0,0,0,80},
+--		shadowColor = {0, 0, 0, 0.40},
 --		glowOffset = 1,
---		glowColor = {120,0,0,180}
+--		glowColor = {0.5, 0, 0, 0.75},
+--		callback = myFunction
 --	})
 --
 -- Colors can be specified using floating point (0.0-1.0) or old style integer (0-255)
@@ -89,7 +91,8 @@ local function newText(options)
 	if ( options.blurShadow   and type(options.blurShadow) == "number")    then args.blurShadow   = options.blurShadow end
 	if ( options.callback     and type(options.callback) == "function")    then args.callback     = options.callback end
 	if ( options.embossDepth  and type(options.embossDepth) == "number")   then args.embossDepth  = options.embossDepth end
-	if ( options.font )                                                    then args.font         = options.font end
+	if ( options.font         and (type(options.font) == "string" 
+		                      or  type(options.font) == "userdata"))       then args.font         = options.font end
 	if ( options.glowColor    and type(options.glowColor) == "table")      then args.glowColor    = options.glowColor end
 	if ( options.glowOffset   and type(options.glowOffset) == "number")    then args.glowOffset   = options.glowOffset end
 	if ( options.shadowColor  and type(options.shadowColor) == "table")    then args.shadowColor  = options.shadowColor end
