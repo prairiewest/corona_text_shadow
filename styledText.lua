@@ -56,7 +56,104 @@
 
 local M = {}
 
-local function newText(options)
+M.cachedLayers = {}
+
+M.cacheToFilesystem = function(layerToSave)
+    display.save(layerToSave, {filename=layerToSave.cacheFileName, baseDir=system.TemporaryDirectory} )
+    table.insert(M.cachedLayers, layerToSave)
+end
+
+M.onSystemEvent = function( event )
+    if (event.type=="applicationResume") then
+        for i,v in ipairs(M.cachedLayers) do
+            if v ~= nil then
+                -- Remove all previously rendered objects, since their textures have been purged and can't be redrawn
+                while v.numChildren and v.numChildren > 0 do
+                    local child = v[1]
+                    if child then child:removeSelf() end
+                end
+                if v.cacheFileName and v.cacheWidth and v.cacheHeight then
+                    -- Reload from cache
+                    local cachedImage = display.newImageRect(v,v.cacheFileName,system.TemporaryDirectory, v.cacheWidth, v.cacheHeight)
+                end
+            end
+        end
+    elseif (event.type == "applicationExit") then
+        -- Clean up cached images from temp folder
+        for i,v in ipairs(M.cachedLayers) do
+            if v.cacheFileName ~= nil then
+                os.remove(system.pathForFile(v.cacheFileName, system.TemporaryDirectory ))
+                v.cacheFileName = nil
+            end
+        end
+    end
+end
+
+M.startCapture = function(layerOutput, layer1, layer2, labelText, args)
+    local output1, output2
+    local nextIndex = #labelText + 1
+
+    if (args.shadowOffset > 1 or args.embossDepth ~= 0) then
+        output1 = display.capture(layer1)
+        if (args.blurShadow == 1) then
+            output1.fill.effect = "filter.blurGaussian"
+            output1.fill.effect.horizontal.blurSize = 2
+            output1.fill.effect.horizontal.sigma = 1.5
+            output1.fill.effect.vertical.blurSize = 2
+            output1.fill.effect.vertical.sigma = 1.5
+        end
+        output1.x = args.shadowOffset
+        output1.y = args.shadowOffset
+        layerOutput:insert(output1)
+    end
+
+    if (args.glowOffset > 1) then
+        output2 = display.capture(layer2)
+        if (args.blurGlow == 1) then
+            output2.fill.effect = "filter.blurGaussian"
+            output2.fill.effect.horizontal.blurSize = 2
+            output2.fill.effect.horizontal.sigma = 1.5
+            output2.fill.effect.vertical.blurSize = 2
+            output2.fill.effect.vertical.sigma = 1.5
+        end
+        layerOutput:insert(output2)
+    end
+    for i, v in ipairs(labelText) do
+        labelText[i]:removeSelf()
+        labelText[i] = nil
+    end
+    layer1:removeSelf(); layer1 = nil
+    layer2:removeSelf(); layer2 = nil
+    
+    local styleO = {
+        parent   = layerOutput,
+        text     = args.text, 
+        font     = args.font, 
+        fontSize = args.size
+    }
+    if (type(args.width) == "number") then
+        styleO.width = args.width; styleO.align = args.align
+    end
+    labelText[nextIndex] = display.newText(styleO)
+    labelText[nextIndex].x = 0; labelText[nextIndex].y = 0
+    labelText[nextIndex]:setFillColor( args.textColor[1], args.textColor[2], args.textColor[3], args.textColor[4] )
+    nextIndex = nextIndex + 1
+    if (type(args.anchorX) == "number") then
+        layerOutput.anchorX = args.anchorX
+    end
+    if (type(args.anchorY) == "number") then
+        layerOutput.anchorY = args.anchorY
+    end
+    layerOutput.x=args.x; layerOutput.y=args.y
+
+    if args.id then layerOutput.id = args.id end
+    local bounds = layerOutput.contentBounds
+    layerOutput.cacheWidth = bounds.xMax - bounds.xMin
+    layerOutput.cacheHeight = bounds.yMax - bounds.yMin
+    if args.callback then args.callback(layerOutput) end
+end
+
+M.newText = function(options)
     local labelText = {}
     local args = {
     	align        = "left", 
@@ -83,6 +180,9 @@ local function newText(options)
 	layer1.x, layer1.y = display.contentWidth/2, display.contentHeight/2
 	local layer2 = display.newGroup()
 	layer2.x, layer2.y = display.contentWidth/2, display.contentHeight/2
+	local layerOutput = display.newGroup()
+    math.randomseed(os.clock()*1000000000)
+	layerOutput.cacheFileName = math.random(100000000, 999999999) .. ".png"
 
 	if ( options.align        and type(options.align) == "string")         then args.align        = options.align end
 	if ( options.anchorX      and type(options.anchorX) == "number")       then args.anchorX      = options.anchorX end
@@ -192,73 +292,20 @@ local function newText(options)
 		end
 	end
 
-	local startCapture = function(args, layer1, layer2, labelText)
-		local layerOutput = display.newGroup()
-		local output1, output2
-		local nextIndex = #labelText + 1
-
-		if (args.shadowOffset > 1 or args.embossDepth ~= 0) then
-			output1 = display.capture(layer1)
-			if (args.blurShadow == 1) then
-				output1.fill.effect = "filter.blurGaussian"
-				output1.fill.effect.horizontal.blurSize = 2
-				output1.fill.effect.horizontal.sigma = 1.5
-				output1.fill.effect.vertical.blurSize = 2
-				output1.fill.effect.vertical.sigma = 1.5
-			end
-			output1.x = args.shadowOffset
-			output1.y = args.shadowOffset
-			layerOutput:insert(output1)
-		end
-
-		if (args.glowOffset > 1) then
-			output2 = display.capture(layer2)
-			if (args.blurGlow == 1) then
-				output2.fill.effect = "filter.blurGaussian"
-				output2.fill.effect.horizontal.blurSize = 2
-				output2.fill.effect.horizontal.sigma = 1.5
-				output2.fill.effect.vertical.blurSize = 2
-				output2.fill.effect.vertical.sigma = 1.5
-			end
-			layerOutput:insert(output2)
-		end
-		for i, v in ipairs(labelText) do
-			labelText[i]:removeSelf()
-			labelText[i] = nil
-		end
-		layer1:removeSelf(); layer1 = nil
-		layer2:removeSelf(); layer2 = nil
-		
-		local styleO = {
-			parent   = layerOutput,
-			text     = args.text, 
-			font     = args.font, 
-			fontSize = args.size
-		}
-		if (type(args.width) == "number") then
-			styleO.width = args.width; styleO.align = args.align
-		end
-		labelText[nextIndex] = display.newText(styleO)
-		labelText[nextIndex].x = 0; labelText[nextIndex].y = 0
-		labelText[nextIndex]:setFillColor( args.textColor[1], args.textColor[2], args.textColor[3], args.textColor[4] )
-		nextIndex = nextIndex + 1
-		if (type(args.anchorX) == "number") then
-			layerOutput.anchorX = args.anchorX
-		end
-		if (type(args.anchorY) == "number") then
-			layerOutput.anchorY = args.anchorY
-		end
-		layerOutput.x=args.x; layerOutput.y=args.y
-
-		if args.id then layerOutput.id = args.id end
-		if args.callback then args.callback(layerOutput) end
-	end
-
   	timer.performWithDelay( 200, function()
-  		startCapture(args, layer1, layer2, labelText)
+  		M.startCapture(layerOutput, layer1, layer2, labelText, args)
   	end)
 
+    if system.getInfo("platform") == "android" then
+        timer.performWithDelay( 300, function()
+            M.cacheToFilesystem(layerOutput)
+        end)
+    end
+    
 end
-M.newText = newText
+
+if system.getInfo("platform") == "android" then
+    Runtime:addEventListener( "system", M.onSystemEvent )
+end
 
 return M
