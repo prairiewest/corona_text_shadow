@@ -16,28 +16,38 @@ local function main()
 	background.x = display.contentWidth / 2
 	background.y = display.contentHeight / 2
 	local textObjects = {}
-	local animate, animate2
+	local animate1_1, animate1_2, animate5_1, animate5_2
 
-	animate = function()
-		transition.to( textObjects[5], { time=6000, y=textObjects[5].y+100, onComplete=animate2} )
+    animate1_1 = function()
+        textObjects[1].numCycles = textObjects[1].numCycles + 1
+        if textObjects[1].numCycles < 9 then
+            transition.to( textObjects[1], { time=500, alpha=0, onComplete=animate1_2} )
+        end
+    end
+    animate1_2 = function()
+        transition.to( textObjects[1], { time=500, alpha=1, onComplete=animate1_1} )
+    end
+    
+	animate5_1 = function()
+		transition.to( textObjects[5], { time=6000, y=textObjects[5].y+100, onComplete=animate5_2} )
 	end
-
-	animate2 = function()
+	animate5_2 = function()
 		transition.to( textObjects[5], { time=2000, rotation=360} )
-		textObjects[1]:removeSelf()  -- Show how to remove text
+	end
+	
+	local objectReady = function(o)
+		if o.id then 
+            print("Object ready: " .. o.id)
+        		if o.id == "text5" then
+        			animate5_1()
+        		end
+            if o.id == "text1" then
+                animate1_1()
+            end
+    		end
 	end
 
-	local registerObject = function(o)
-		table.insert(textObjects, o)
-		print("Registered text object #" .. #textObjects)
-		if (o.id) then print("id of this object: " .. o.id) end
-
-		if o.id and o.id == "text5" then
-			animate()
-		end
-	end
-
-	styledText.newText({
+	textObjects[1] = styledText.newText({
 		text = "Unstyled",
 		id = "text1",
 		textColor = {0.15, 0.70, 0.5, 1.0},
@@ -45,10 +55,11 @@ local function main()
 		y = spacing, 
 		font = "Arial", 
 		size = 32,
-		callback = registerObject
+		callback = objectReady
 	})
+	textObjects[1].numCycles = 0
 
-	styledText.newText({
+	textObjects[2] = styledText.newText({
 		text = "Glow Black",
 		id = "text2",
 		textColor = {0.15, 0.70, 0.5, 1.0},
@@ -58,10 +69,10 @@ local function main()
 		size = 34,
 		glowOffset = 1,
 		glowColor = {0, 0, 0, 0.5},
-		callback = registerObject
+		callback = objectReady
 	})
 
-	styledText.newText({
+	textObjects[3] = styledText.newText({
 		text = "Glow White",
 		id = "text3", 
 		textColor = {0.15, 0.70, 0.5, 1.0},
@@ -71,10 +82,10 @@ local function main()
 		size = 36,
 		glowOffset = 1,
 		glowColor = {1, 1, 1, 0.5},
-		callback = registerObject
+		callback = objectReady
 	})
 
-	styledText.newText({
+	textObjects[4] = styledText.newText({
 		text = "Shadow Black",
 		id = "text4",
 		textColor = {0.15, 0.70, 0.5, 1.0},
@@ -83,10 +94,10 @@ local function main()
 		size = 38,
 		shadowOffset = 3,
 		shadowColor = {0,0,0,180},
-		callback = registerObject
+		callback = objectReady
 	})
 
-	styledText.newText({
+	textObjects[5] = styledText.newText({
 		text = "White On Blue",
 		id = "text5",
 		textColor = {1.0, 1.0, 1.0, 1.0},
@@ -96,10 +107,10 @@ local function main()
 		size = 40,
 		shadowOffset = 3,
 		shadowColor =  {0.3,0.3,1.0,0.8},
-		callback = registerObject
+		callback = objectReady
 	})
 
-	styledText.newText({
+	textObjects[6] = styledText.newText({
 		text = "Shadow and Red Glow", 
 		textColor = {1.0, 1.0, 1.0, 1.0},
 		x = 160,
@@ -110,7 +121,7 @@ local function main()
 		shadowColor = {0, 0, 0, 0.40},
 		glowOffset = 1,
 		glowColor = {0.5, 0, 0, 0.75},
-		callback = registerObject
+		callback = objectReady
 	})
 
 end

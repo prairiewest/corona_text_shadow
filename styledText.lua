@@ -301,7 +301,7 @@ M.newText = function(options)
             M.cacheToFilesystem(layerOutput)
         end)
     end
-    
+    return layerOutput -- WARNING: may not yet be fully rendered
 end
 
 if system.getInfo("platform") == "android" then
