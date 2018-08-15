@@ -51,16 +51,17 @@ List of all parameters that can be passed in:
 
    shadowColor:  the color of the shadow effect [default: black (0,0,0,0.5)]
    shadowOffset: the distance that the shadow is offset from the text [default: 0]
-   blurShadow:   0=do not blur the shadow; 1=blur the shadow [default=1]
+   blurShadow:   0=do not blur the shadow; 1=blur the shadow [default: 1]
 
    glowColor:  the color of the glow around the text [default: grey (0.5,0.5,0.5,1.0)]
    glowOffset: the width of the glow around the text, in pixels [default: 0]
-   blurGlow    0=do not blur the glow; 1=blur the glow [default=1]
+   blurGlow    0=do not blur the glow; 1=blur the glow [default: 1]
 
-   embossDepth: integer, the number of pixels to raise or lower the emboss effect. Negative means raised. [default: 0]
+   embossDepth: integer, number of pixels to raise or lower emboss effect. Negative is raised. [default: 0]
 
    id: if supplied, the final object will be assigned this id
-   callback: if supplied, this function will be called after the text is rendered, with the final output as the argument
+   callback: if supplied, this function will be called after the text is rendered, 
+       with the final output as the argument
 ```
 
 All colors can be specified using floating point (0.0-1.0) or old style integer (0-255)
