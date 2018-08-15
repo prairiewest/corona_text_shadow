@@ -1,17 +1,19 @@
 -- styledText
 --
 -- Copyright 2013 Todd Trann
+-- MIT License
 --
 -- Sample usage:
 --
 --  local styledText = require("styledText")
 --
---	styledText.newText({
+--	local myText = styledText.newText({
 --		text = "Hello World", 
 --		textColor = {1.0, 1.0, 1.0, 1.0},
 --		x = 160,
 --		y = 200, 
---		font = "Arial", 
+--		font = "Arial",
+--		id = "myText1",
 --		size = 24,
 --		shadowOffset = 2,
 --		shadowColor = {0, 0, 0, 0.40},
@@ -50,8 +52,8 @@
 --   id: if supplied, the final object will be assigned this id
 --   callback: if supplied, this function will be called after the text is rendered, with the final output as the argument
 --
--- To remove the text once created, you must have kept a reference to it with the callback function:
---   textObjectReference:removeSelf()
+-- To remove the text once created, you must have kept a reference to it:
+--   myText:removeSelf()
 
 
 local M = {}

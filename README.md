@@ -4,26 +4,31 @@ This is the source code for the tutorial at http://prairiewest.net/blog/2013/12/
 
 ## Sample usage
 
+See the file main.lua for a more complete sample.
+
 ```
   local styledText = require("styledText")
   local myText
 
-  local registerObject = function(o)
-      myText = o
+  local objectReady = function(o)
+      if o.id then
+      	print("Object is ready: " .. o.id)
+      end
   end
 
-  styledText.newText({
+  myText = styledText.newText({
 	text = "Hello World", 
 	textColor = {255,255,255,255},
 	x = 160,
 	y = 200, 
 	font = "Arial", 
 	size = 24,
+	id = "myText1",
 	shadowOffset = 2,
 	shadowColor = {0,0,0,80},
 	glowOffset = 1,
 	glowColor = {120,0,0,180},
-	callback = registerObject
+	callback = objectReady
   })
 ```
 
@@ -62,7 +67,7 @@ All colors can be specified using floating point (0.0-1.0) or old style integer 
 
 ## Removal
 
-To remove the text once created, you must have kept a reference to it with the callback function:
+To remove the text once created, you must have kept a reference to it:
 ```
 	myText:removeSelf()
 ```
