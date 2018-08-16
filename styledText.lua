@@ -177,14 +177,6 @@ M.newText = function(options)
     	x            = display.contentWidth/2, 
     	y            = display.contentHeight/2
     }
-    local nextIndex = 1
-	local layer1 = display.newGroup()
-	layer1.x, layer1.y = display.contentWidth/2, display.contentHeight/2
-	local layer2 = display.newGroup()
-	layer2.x, layer2.y = display.contentWidth/2, display.contentHeight/2
-	local layerOutput = display.newGroup()
-    math.randomseed(os.clock()*1000000000)
-	layerOutput.cacheFileName = math.random(100000000, 999999999) .. ".png"
 
 	if ( options.align        and type(options.align) == "string")         then args.align        = options.align end
 	if ( options.anchorX      and type(options.anchorX) == "number")       then args.anchorX      = options.anchorX end
@@ -207,6 +199,15 @@ M.newText = function(options)
 	if ( options.x            and type(options.x) == "number" )            then args.x            = options.x end
 	if ( options.y            and type(options.y) == "number" )            then args.y            = options.y end
 
+    local nextIndex = 1
+    local layer1 = display.newGroup()
+    layer1.x, layer1.y = args.x, args.y
+    local layer2 = display.newGroup()
+    layer2.x, layer2.y = args.x, args.y
+    local layerOutput = display.newGroup()
+    math.randomseed(os.clock()*1000000000)
+    layerOutput.cacheFileName = math.random(100000000, 999999999) .. ".png"
+    
 	local function applyColorScale(a)
 		if type(a[1]) == "number" then
 			if (a[1] > 1.0 or a[2] > 1.0 or a[3] > 1.0 or a[4] > 1.0) then
