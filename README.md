@@ -1,6 +1,7 @@
 # Corona Text Shadow and Glow
 This is the source code for the tutorial at http://prairiewest.net/blog/2013/12/text-shadow-glow-corona-sdk/
 
+<p><span color="red">There is a better library for making outlined text in Solar2D.</span> Please see: https://github.com/ponywolf/ponystroke</p>
 
 ## Sample usage
 
